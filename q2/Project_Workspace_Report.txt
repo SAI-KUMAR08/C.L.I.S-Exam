@@ -1,0 +1,74 @@
+Project Workspace Report
+========================
+
+1) Directory structure creation
+Command:
+mkdir -p secure_workspace/{docs,src,logs}
+Output:
+(no output)
+Explanation:
+This created the requested project directories for documents, source files, and logs.
+
+2) File creation
+Command:
+touch secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Output:
+(no output)
+Explanation:
+This created the project files inside the newly created directories.
+
+3) Permissions before modification
+Command:
+ls -ld secure_workspace secure_workspace/*
+Output:
+drwxrwxrwx+ 5 codespace codespace 4096 Jul 3 13:52 secure_workspace
+drwxrwxrwx+ 2 codespace codespace 4096 Jul 3 13:52 secure_workspace/docs
+drwxrwxrwx+ 2 codespace codespace 4096 Jul 3 13:52 secure_workspace/logs
+drwxrwxrwx+ 2 codespace codespace 4096 Jul 3 13:52 secure_workspace/src
+Explanation:
+The initial permissions were open to everyone because the default umask value allowed broad access.
+
+4) Permission adjustment
+Command:
+chmod 750 secure_workspace
+chmod 750 secure_workspace/docs secure_workspace/src secure_workspace/logs
+chmod 640 secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Output:
+(no output)
+Explanation:
+The permissions were restricted so only the owner could access the workspace contents while the group had limited access.
+
+5) Permissions after modification
+Command:
+ls -ld secure_workspace secure_workspace/*
+ls -l secure_workspace/*
+Output:
+drwxr-x---+ 5 codespace codespace 4096 Jul 3 13:52 secure_workspace
+drwxr-x---+ 2 codespace codespace 4096 Jul 3 13:52 secure_workspace/docs
+drwxr-x---+ 2 codespace codespace 4096 Jul 3 13:52 secure_workspace/logs
+drwxr-x---+ 2 codespace codespace 4096 Jul 3 13:52 secure_workspace/src
+secure_workspace/docs:
+-rw-r----- 1 codespace codespace 0 Jul 3 13:52 plan.txt
+secure_workspace/logs:
+-rw-rw-rw- 1 codespace codespace 0 Jul 3 13:52 activity.log
+secure_workspace/src:
+-rw-r----- 1 codespace codespace 0 Jul 3 13:52 app.txt
+Explanation:
+The directory and files now have more restrictive permissions. This helps protect project data from unauthorized access.
+
+6) Umask value
+Command:
+umask
+Output:
+0022
+Explanation:
+The current umask value of 0022 removes write permission for group and others by default. This is why the earlier files were initially created with broad but not full access.
+
+7) Ownership details
+Command:
+ls -ld secure_workspace secure_workspace/*
+Output:
+owner: codespace
+group: codespace
+Explanation:
+The workspace and its files are owned by the current user, which makes the owner the primary administrator of the project data.

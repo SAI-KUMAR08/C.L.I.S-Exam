@@ -1,0 +1,53 @@
+Environment Report
+=================
+
+1) whoami
+Command:
+whoami
+Output:
+codespace
+Explanation:
+This verified the current login user. The returned value confirms the shell is running as the expected account.
+
+2) id
+Command:
+id
+Output:
+uid=1000(codespace) gid=1000(codespace) groups=1000(codespace),985(pipx),986(python),987(oryx),988(golang),989(docker),990(sdkman),991(rvm),992(php),993(conda),994(nvs),995(nvm),996(hugo),1001(ssh)
+Explanation:
+This displayed the UID, GID, and supplementary groups for the account. It shows the permissions and group memberships available to the user.
+
+3) echo "$SHELL"
+Command:
+echo "$SHELL"
+Output:
+/bin/bash
+Explanation:
+This confirmed the default shell in use. The value shows the session is using bash.
+
+4) pwd
+Command:
+pwd
+Output:
+/
+Explanation:
+This verified the current working directory. The shell is currently at the filesystem root.
+
+5) ls -ls
+Command:
+ls -ls
+Output:
+total 88
+0 lrwxrwxrwx 1 root root 7 Apr 22 2024 bin -> usr/bin
+4 drwxr-xr-x 2 root root 4096 Jul 10 2025 bin.usr-is-merged
+...
+Explanation:
+This listed the files and directories in the workspace root. The output helped verify the visible directory layout and permissions.
+
+6) curl -s --max-time 10 https://chatgpt.com > /dev/null && echo "Network: chatgpt.com reachable"
+Command:
+curl -s --max-time 10 https://chatgpt.com > /dev/null && echo "Network: chatgpt.com reachable"
+Output:
+Network: chatgpt.com reachable
+Explanation:
+This tested outbound network connectivity. The successful response shows the environment can reach external network services.

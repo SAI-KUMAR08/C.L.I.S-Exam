@@ -1,0 +1,73 @@
+I/O Investigation Report
+========================
+
+1) Create a sample log file
+Command:
+echo "sample log line" > app.log
+Output:
+(no output)
+Explanation:
+This created a test file that could be used for file descriptor and redirection experiments.
+
+2) Inspect open files for the current shell
+Command:
+lsof -p $$ | grep app.log
+Output:
+(no output before redirection)
+Explanation:
+This checked whether the current shell already had the test file open. No entry was present before the file descriptor was explicitly opened.
+
+3) Open file descriptor 3 for reading
+Command:
+exec 3<app.log
+lsof -p $$ | grep app.log
+Output:
+bash 19203 codespace 3r REG 7,4 16 1310807 /workspaces/C.L.I.S-Exam/q4/app.log
+Explanation:
+The shell opened the file on descriptor 3. The output confirmed the file was now open through the shell process.
+
+4) Inspect /proc file descriptors
+Command:
+ls -l /proc/$$/fd | grep app.log
+Output:
+lr-x------ 1 codespace codespace 64 Jul 3 13:56 3 -> /workspaces/C.L.I.S-Exam/q4/app.log
+Explanation:
+This showed the shell’s open file descriptors through the proc filesystem. The file was visible as descriptor 3.
+
+5) Redirect stdout and stderr
+Command:
+ls -l > stdout.txt
+ls /not_a_real_path 2> stderr.txt
+Output:
+(no output)
+Explanation:
+Standard output and standard error were redirected into separate files, allowing the results to be captured without cluttering the terminal.
+
+6) Combine stdout and stderr
+Command:
+(ls -l && ls /not_a_real_path) > combined.txt 2>&1
+Output:
+(no output)
+Explanation:
+This merged both standard output and standard error into a single file, which is useful for troubleshooting.
+
+7) Display resource limits
+Command:
+ulimit -a
+Output:
+real-time non-blocking time (microseconds, -R) unlimited
+core file size (blocks, -c) unlimited
+...
+Explanation:
+The shell reported its resource limits, including file size, open files, and stack size. These values affect how processes manage I/O resources.
+
+8) Close descriptor 3
+Command:
+exec 3<&-
+Output:
+(no output)
+Explanation:
+This closed the extra file descriptor after the investigation. It shows how the shell manages file handles explicitly.
+
+Conclusion:
+Linux uses file descriptors to represent open files for processes. Redirection changes where stdin, stdout, and stderr go, and resource limits define how many and what kind of handles a shell can use.
